@@ -34,6 +34,7 @@ public class TinodeResource {
         String encodedString = Base64.getEncoder().encodeToString("ducmami:123456".getBytes());
         Tinode.ClientHi clientHi = Tinode.ClientHi.newBuilder()
                 .setId(UUID.randomUUID().toString())
+                .setVer("v1.45.0")
                 .setPlatform("quarkus-grpc")
                 .build();
 
