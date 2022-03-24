@@ -1,0 +1,42 @@
+quarkus:
+
+  banner:
+    path: dota.txt
+    enabled: true
+  application:
+    name: underlord
+  http:
+    cors:
+      ~: true
+      exposed-headers:
+        - X-Page-Count
+        - X-Page-Number
+        - X-Page-Size
+        - X-Total-Count
+      origins:
+        - "*"
+      methods:
+        - "*"
+      headers:
+        - "*"
+    root-path: /
+    non-application-root-path: /system
+  smallrye-metrics:
+    extensions:
+      enabled: true
+    path: /system/metrics
+  smallrye-health:
+    root-path: /system/health
+    ui:
+      enable: true
+  smallrye-openapi:
+    enable: true
+  jaeger:
+    service-name: underlord
+    enabled: true
+    sampler-type: const
+    sampler-param: 0
+  log:
+    console:
+      async: true
+      format: ts=%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} level=%p pid=%i traceId=%X{traceId} parentId=%X{parentId} spanId=%X{spanId} sampled=%X{sampled} caller=%c thread="%t" message="%s%e"%n

@@ -1,0 +1,13 @@
+quarkus:
+  http:
+    port: 31919
+  log:
+    console:
+      format: "%d{yyyy-MM-dd HH:mm:ss} %-5p %i [%X{traceId},%X{parentId},%X{spanId},%X{sampled}] %-10t %c{1.}: %s%e%n"
+  grpc:
+    clients:
+      tinode:
+        negotiation-type: PLAINTEXT
+        plain-text: true
+        host: localhost
+        port: 16060
