@@ -32,17 +32,25 @@ public class TinodeResource {
     @Path("/hello-grpc")
     public Multi<String> helloGrpc(@RestQuery String name) throws UnsupportedEncodingException {
         String encodedString = Base64.getEncoder().encodeToString("ducmami:123456".getBytes());
+        Tinode.ClientHi clientHi = Tinode.ClientHi.newBuilder()
+                .setId(UUID.randomUUID().toString())
+                .setPlatform("quarkus-grpc")
+                .build();
+
         Tinode.ClientLogin clientLogin = Tinode.ClientLogin.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setScheme("basic")
                 .setSecret(ByteString.copyFrom(encodedString, "UTF-8"))
                 .build();
-        Tinode.ClientMsg msg = Tinode.ClientMsg.newBuilder()
+        Tinode.ClientMsg msg1 = Tinode.ClientMsg.newBuilder()
+                .setHi(clientHi)
+                .build();
+        Tinode.ClientMsg msg2 = Tinode.ClientMsg.newBuilder()
                 .setLogin(clientLogin)
                 .build();
 
         final ByteString nullByteString  = ByteString.copyFrom("null", "UTF-8");
-        Multi<Tinode.ServerMsg> serverMsgMulti = nodeStub.messageLoop(Multi.createFrom().item(msg));
+        Multi<Tinode.ServerMsg> serverMsgMulti = nodeStub.messageLoop(Multi.createFrom().items(msg1,msg2));
         return serverMsgMulti
                 .onItem()
                 .transform(serverMsg -> {
